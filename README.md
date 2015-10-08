@@ -13,7 +13,10 @@
 ## Overview
 
 Provides a function to download files from remote servers and send content to node cashed catalog.
-Based on ruby code from [https://github.com/lwf/puppet-remote_file] by Torbjörn Norinder
+Based on ruby code:
+* from [https://github.com/lwf/puppet-remote_file] by Torbjörn Norinder
+* from [https://github.com/sulaweyo/http_download] by Sledge Sulaweyo
+* and Ruby Examples
 
 ## Module Description
 
@@ -32,7 +35,7 @@ file { '/etc/myfile':
 ```
 ## Reference
 
-download_content("URL") where URL is HTTP(S) resource
+download_content("URL") where URL is HTTP or HTTPS resource
 
 ## Limitations
 

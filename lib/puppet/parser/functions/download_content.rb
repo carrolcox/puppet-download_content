@@ -1,64 +1,46 @@
 # Download content from url
+require 'puppet/parser/functions'
+require 'net/http'
+require 'net/https'
+require 'uri'
 
 Puppet::Parser::Functions::newfunction(:download_content, :type => :rvalue) do |args|
 
-	require 'net/http'
-	require 'net/https'
-	require 'uri'
-
-	unless url = args[0]
-		raise Puppet::ParseError, ":download_content(): requires at least one argument"
+	if args.size != 2
+		Puppet.crit("download_content can accept only two arguments - URL and redirections limit")
 	end
 
-	raise(Puppet::ParseError,':download_content(): cannot accept only one argument') if args.size != 1
-	
-	REQUEST_TYPES = {
-		'get'  => Net::HTTP::Get,
-		'head' => Net::HTTP::Head,
-	}
+	uri = URI(args[0])
+	lim = args[1] || 10
+	content = nil
 
-	reqtype    = 'get'
-	limit      = 60
-
-	# Create the Net::HTTP connection and request objects
-	request    = REQUEST_TYPES[reqtype.to_s.downcase].new(uri.request_uri)
-	connection = Net::HTTP.new(uri.host,uri.port)
-    
-	# Configure the Net::HTTP connection object
+	http = Net::HTTP.new(uri.host, uri.port)
 	if uri.scheme == 'https'
-		connection.use_ssl = true
-	end
-	if connection.use_ssl?
-	       connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
-	end
-    
-	# Configure the Net::HTTPRequest object
-	if options[:headers]
-		options[:headers].each {|key,value| request[key] = value }
+		http.use_ssl = true
+		http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 	end
 
-	recursive_response = nil
-	response = connection.start do |http|
-		http.request(request) do |resp|
-			# Determine and react to the request result
-			case resp
-			when Net::HTTPRedirection
-				next_opts = options.merge(:limit => limit - 1)
-				next_loc  = URI.parse(resp['location'])
-		      		recursive_response = http(next_loc, io_ready_to_write, next_opts)
-			when Net::HTTPSuccess
-		      		resp.read_body do |chunk|
-			    		io_ready_to_write.write(chunk)
-		      		end
-			else
-		      		raise Puppet::Error.new "Unexpected response code #{resp.code}: #{resp.read_body}"
+	request = Net::HTTP::Get.new uri.request_uri
+	http.request request do |response|
+		case response
+		when Net::HTTPRedirection then
+			location = response['location']
+			Puppet.notice("redirected to #{location}")
+			download_content(location, lim - 1)
+		when Net::HTTPForbidden then
+			Puppet.crit("SecurityError -> Access denied")
+		when Net::HTTPNotFound then
+			Puppet.crit("ArgumentError -> Not found")
+		when Net::HTTPError then
+			if nil != http and http.started?
+				http.finish()
 			end
-	  	end
-    	end
-
-	if response != nil and recursive_response != nil
-		recursive_response || response
-	else
-		raise(Puppet::ParseError,':download_content(): nothing to return')
+			Puppet.crit("HTTP Exception during download")
+		when Net::HTTPSuccess then
+			content = response.body
+		else
+			Puppet.crit("Unexpected state => #{response.code} - #{response.message}")
+		end
 	end
+	return content if not nil
 end
