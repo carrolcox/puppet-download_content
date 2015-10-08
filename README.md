@@ -1,2 +1,49 @@
-# puppet-download_content
-Download file from URI (http|https) at puppet-master and send content to node cached catalog
+# remote_file
+
+#### Table of Contents
+
+1. [Overview](#overview)
+2. [Module Description - What the module does and why it is useful](#module-description)
+4. [Usage - Configuration options and additional functionality](#usage)
+5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+6. [Limitations - OS compatibility, etc.](#limitations)
+7. [License](#license)
+8. [Contact](#contact)
+
+## Overview
+
+Provides a function to download files from remote servers and send content to node cashed catalog.
+Based on ruby code from [https://github.com/lwf/puppet-remote_file] by Torbjörn Norinder
+
+## Module Description
+
+Retrieving content from remote servers is a general and very basic
+configuration capability.
+
+## Usage
+
+Use function in type file, for example
+
+```puppet
+file { '/etc/myfile':
+  ensure => present,
+  content => download_content('http://example.com/file.tar.gz'),
+}
+```
+## Reference
+
+download_content("URL") where URL is HTTP(S) resource
+
+## Limitations
+
+Currently only http, https URI sources are supported by the default
+ruby provider.
+
+## License
+
+Apache License Version 2.0
+
+## Contact
+
+Carrol Cox <mr.jsdive@gmail.com>
+
