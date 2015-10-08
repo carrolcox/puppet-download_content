@@ -12,7 +12,6 @@ Puppet::Parser::Functions::newfunction(:download_content, :type => :rvalue) do |
 
 	raise(Puppet::ParseError,':download_content(): cannot accept only one argument') if args.size != 1
 	
-	mk_resource_methods
 	REQUEST_TYPES = {
 		'get'  => Net::HTTP::Get,
 		'head' => Net::HTTP::Head,
@@ -57,6 +56,9 @@ Puppet::Parser::Functions::newfunction(:download_content, :type => :rvalue) do |
 	  	end
     	end
 
-	recursive_response || response
-
+	if response != nil and recursive_response != nil
+		recursive_response || response
+	else
+		raise(Puppet::ParseError,':download_content(): nothing to return')
+	end
 end
