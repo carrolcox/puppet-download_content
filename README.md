@@ -1,4 +1,4 @@
-# remote_file
+# Puppet Module: puppet-download_content
 
 #### Table of Contents
 
