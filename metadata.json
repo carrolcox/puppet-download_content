@@ -1,6 +1,6 @@
 {
   "name": "download_content",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Carrol Cox",
   "license": "Apache-2.0",
   "summary": "A custom function for download content of remote files via http/https.",

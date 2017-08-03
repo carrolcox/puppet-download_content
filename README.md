@@ -41,6 +41,7 @@ file { '/etc/myfile':
 ## Reference
 
 download_content("URL") where URL is HTTP or HTTPS resource.
+
 download_content("URL", LIM) where URL is HTTP or HTTPS resource, and LIM is limit http redirects.
 
 ## Limitations

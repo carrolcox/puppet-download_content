@@ -1,19 +1,15 @@
-# Download content from url
-module Puppet::Parser::Functions:
-    newfunction(:download_content, :type => :rvalue) do |args|
+# Download content from url. Ruby API (modern)
+Puppet::Functions.create_new(:download_content) do
+    dispatch :download_content do
+        required_param 'String', :url
+        optional_param 'Integer', :lim
+        return_type 'NotUndef'
+    end
 
-        require 'puppet/parser/functions'
-        require 'net/http'
-        require 'net/https'
-        require 'uri'
-
-        unless args.size = 2
-            raise Puppet::ParseError, ("download_content can accept only two arguments -> URL and redirections limit")
-        end
-
-        uri = URI(args[0])
-        lim = args[1] || 20
+    def :download_content(url, lim = 10)
+        
         content = nil
+        uri = URI(url)
 
         http = Net::HTTP.new(uri.host, uri.port)
 
@@ -50,3 +46,4 @@ module Puppet::Parser::Functions:
         return content if not nil
     end
 end
+
