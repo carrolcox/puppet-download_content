@@ -20,8 +20,7 @@ Based on ruby code:
 
 ## Module Description
 
-Retrieving content from remote servers is a general and very basic
-configuration capability.
+Retrieving content from remote servers is a general and very basic configuration capability.
 
 ## Usage
 
@@ -33,14 +32,20 @@ file { '/etc/myfile':
   content => download_content('http://example.com/file.tar.gz'),
 }
 ```
+```puppet
+file { '/etc/myfile':
+  ensure => present,
+  content => download_content('http://example.com/file.tar.gz', 10),
+}
+```
 ## Reference
 
-download_content("URL") where URL is HTTP or HTTPS resource
+download_content("URL") where URL is HTTP or HTTPS resource.
+download_content("URL", LIM) where URL is HTTP or HTTPS resource, and LIM is limit http redirects.
 
 ## Limitations
 
-Currently only http, https URI sources are supported by the default
-ruby provider.
+Currently only http/https URI sources are supported by the default ruby provider.
 
 ## License
 

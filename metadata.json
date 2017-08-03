@@ -1,9 +1,9 @@
 {
   "name": "download_content",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Carrol Cox",
   "license": "Apache-2.0",
-  "summary": "A custom functions for download content of remote files.",
+  "summary": "A custom function for download content of remote files via http/https.",
   "source": "https://github.com/carrolcox/puppet-download_content.git",
   "project_page": "https://github.com/carrolcox/puppet-download_content",
   "issues_url": "https://github.com/carrolcox/puppet-download_content/issues",
@@ -13,7 +13,6 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -21,23 +20,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "5",
-        "6",
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": [
-        "5",
-        "6",
-        "7"
-      ]
-    },
-    {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": [
-        "5",
         "6",
         "7"
       ]
@@ -45,7 +27,6 @@
     {
       "operatingsystem": "SLES",
       "operatingsystemrelease": [
-        "10 SP4",
         "11 SP1",
         "12"
       ]
@@ -53,43 +34,44 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "6",
         "7",
-	"8"
+	"8",
+	"9"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "10.04",
         "12.04",
-        "14.04"
+        "14.04",
+        "16.04"
       ]
     },
     {
       "operatingsystem": "Windows",
       "operatingsystemrelease": [
-        "Server 2003 R2",
-        "Server 2008 R2",
-        "Server 2012",
-        "Server 2012 R2"
+        "Server 2012 R2",
+        "7",
+        "10"
       ]
     },
     {
-      "operatingsystem": "OSX",
+      "operatingsystem": "macOS",
       "operatingsystemrelease": [
-        "10.9"
+        "10.10",
+        "10.11",
+        "10.12"
       ]
     }
   ],
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">=3.0.0"
+      "version_requirement": ">=3.8.7"
     },
     {
       "name": "puppet",
-      "version_requirement": ">=3.0.0"
+      "version_requirement": ">=3.8.7"
     }
   ]
 }
